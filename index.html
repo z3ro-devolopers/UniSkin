@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UniSkin — visual novo para a UniTV Web</title>
+<meta name="description" content="Tema não oficial para a UniTV Web: visual escuro moderno, busca de canais, continuar de onde parou e próximo episódio automático.">
+<link rel="icon" href="assets/icone.png">
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: radial-gradient(80% 50% at 50% 0%, rgba(229,9,20,.18), transparent 70%), #0b0c10;
+    color: #e6e8eb;
+    font: 16px/1.6 "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  }
+  main { max-width: 960px; margin: 0 auto; padding: 64px 24px 48px; }
+  .hero { text-align: center; }
+  .hero img { width: 96px; height: 96px; border-radius: 22px; box-shadow: 0 16px 44px rgba(229,9,20,.25); }
+  h1 { margin: 20px 0 8px; font-size: clamp(32px, 6vw, 48px); line-height: 1.1; letter-spacing: -0.02em; color: #fff; }
+  .lead { margin: 0 auto; max-width: 620px; font-size: 18px; color: #9aa0ab; }
+  .badge { display: inline-block; margin-top: 16px; padding: 4px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); font-size: 13px; color: #c9cdd4; }
+  .shot { display: block; width: 100%; margin: 40px 0; border-radius: 16px; border: 1px solid rgba(255,255,255,.08); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+  .grid li { padding: 18px; border-radius: 14px; background: #15171e; border: 1px solid rgba(255,255,255,.06); }
+  .grid b { display: block; margin-bottom: 4px; color: #fff; }
+  .grid span { font-size: 14px; color: #9aa0ab; }
+  h2 { margin: 48px 0 14px; font-size: 22px; color: #fff; }
+  footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.08); font-size: 14px; color: #9aa0ab; text-align: center; }
+  a { color: #ff6b6b; }
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <img src="assets/icone.png" alt="Ícone do UniSkin">
+    <h1>UniSkin</h1>
+    <p class="lead">Um visual novo e mais prático para a UniTV Web: tema escuro moderno, continuar de onde parou e próximo episódio automático.</p>
+    <span class="badge">Extensão para Google Chrome · tema não oficial</span>
+  </section>
+
+  <img class="shot" src="assets/boas-vindas.png" alt="Tela de boas-vindas do UniSkin mostrando os recursos da extensão">
+
+  <h2>O que a extensão faz</h2>
+  <ul class="grid">
+    <li><b>Visual novo</b><span>Fontes, pôsteres, menus e player redesenhados em todo o site.</span></li>
+    <li><b>Continue de onde parou</b><span>Lembra o episódio e o minuto de cada série e filme, mesmo depois de recarregar.</span></li>
+    <li><b>Próximo episódio</b><span>Contagem no fim do episódio e troca automática, sem sair da tela cheia.</span></li>
+    <li><b>Ao vivo mais rápido</b><span>Busca de canais, categorias em botões e troca de canal pelo teclado.</span></li>
+    <li><b>Legendas do seu jeito</b><span>Começam desligadas e lembram o idioma que você escolher.</span></li>
+    <li><b>Pôsteres que faltavam</b><span>Mostra uma capa com o nome quando o site não tem imagem.</span></li>
+  </ul>
+
+  <h2>Privacidade</h2>
+  <p>O UniSkin não coleta nem envia nenhum dado. Preferências e progresso ficam salvos só no seu navegador. Leia a <a href="loja/politica-de-privacidade.html">política de privacidade</a>.</p>
+
+  <footer>
+    UniSkin é um projeto independente e não é feito, mantido nem endossado pela UniTV.<br>
+    UniTV é marca de seus respectivos donos.
+  </footer>
+</main>
+</body>
+</html>
