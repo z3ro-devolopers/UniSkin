@@ -233,7 +233,7 @@
       <a href="#privacidade">Privacidade</a>
       <a href="#perguntas">Perguntas</a>
     </nav>
-    <a class="btn primary small store-link" href="#instalar">Instalar</a>
+    <a class="btn primary small store-link" href="https://chromewebstore.google.com/detail/lmadiichfednomildbghpkmiejabbcln" target="_blank" rel="noopener">Instalar</a>
   </div>
 </header>
 
@@ -243,13 +243,13 @@
     <h1 class="reveal">A UniTV Web do jeito que <span class="grad">deveria ser.</span></h1>
     <p class="lead reveal">Continue de onde parou, pule a abertura, descubra o que assistir e organize a sua lista. Tudo num visual escuro e moderno, direto no site que você já usa.</p>
     <div class="cta reveal" id="instalar">
-      <a class="btn primary store-link" href="#instalar">
+      <a class="btn primary store-link" href="https://chromewebstore.google.com/detail/lmadiichfednomildbghpkmiejabbcln" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.66 5l4.33 7.5A4.5 4.5 0 0 1 12 7.5h8.66A10 10 0 0 0 12 2zm-9.4 6.3A10 10 0 0 0 10.6 21.9l4.33-7.5a4.5 4.5 0 0 1-7.47-.6L2.6 8.3zM21.4 9H12.75a4.5 4.5 0 0 1 2.95 6.3L11.37 22A10 10 0 0 0 21.4 9zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
-        <span class="store-text">Em breve na Chrome Web Store</span>
+        <span class="store-text">Adicionar ao Chrome — é grátis</span>
       </a>
       <a class="btn ghost" href="#recursos">Ver os recursos</a>
     </div>
-    <p class="note reveal">Grátis · Sem anúncios · Conta opcional</p>
+    <p class="note reveal">Grátis na Chrome Web Store · Sem anúncios · Conta opcional</p>
 
     <div class="frame-wrap reveal">
       <div class="frame" id="heroFrame">
@@ -390,7 +390,7 @@
     <div class="final reveal">
       <h2>Pronto para assistir melhor?</h2>
       <p class="sub" style="margin:0 auto 30px">Instale em segundos. Na próxima vez que abrir a UniTV, ela já estará de cara nova.</p>
-      <a class="btn primary store-link" href="#instalar"><span class="store-text">Em breve na Chrome Web Store</span></a>
+      <a class="btn primary store-link" href="https://chromewebstore.google.com/detail/lmadiichfednomildbghpkmiejabbcln" target="_blank" rel="noopener"><span class="store-text">Adicionar ao Chrome — é grátis</span></a>
     </div>
   </section>
 </main>
@@ -402,8 +402,8 @@
 </footer>
 
 <script>
-  // Quando a extensão for aprovada, cole aqui o link da Chrome Web Store: os botões passam a instalar.
-  const STORE_URL = "";
+  // Link da extensão na Chrome Web Store: todos os botões de instalar apontam para ele.
+  const STORE_URL = "https://chromewebstore.google.com/detail/lmadiichfednomildbghpkmiejabbcln";
   document.querySelectorAll(".store-link").forEach((a) => {
     if (STORE_URL) { a.href = STORE_URL; a.target = "_blank"; a.rel = "noopener"; a.querySelector(".store-text") && (a.querySelector(".store-text").textContent = "Adicionar ao Chrome — é grátis"); }
     else if (a.querySelector(".store-text")) a.setAttribute("aria-disabled", "true");
