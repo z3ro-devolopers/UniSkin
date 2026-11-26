@@ -21,38 +21,70 @@
 <body>
 <main>
   <h1>Política de privacidade — UniSkin</h1>
-  <p class="upd">Última atualização: 24 de novembro de 2026</p>
+  <p class="upd">Última atualização: 25 de novembro de 2026</p>
 
   <div class="box">
-    <strong>Resumo:</strong> o UniSkin não coleta, não vende e não envia nenhum dado seu para servidores. Tudo o que ele guarda fica só no seu navegador.
+    <strong>Resumo:</strong> sem conta, o UniSkin guarda seus dados só no navegador e envia ao servidor do UniSkin apenas os <em>nomes dos títulos</em> que aparecem na tela, para buscar capas e episódios. Se você criar uma conta (opcional), guardamos seu e-mail, um código derivado da senha, o seu progresso de reprodução e a sua "Minha lista", para sincronizar entre computadores. Nada é vendido nem usado para anúncios, e você pode excluir a conta a qualquer momento.
   </div>
 
   <h2>O que é o UniSkin</h2>
   <p>UniSkin é uma extensão para o Google Chrome que muda a aparência e acrescenta atalhos no site UniTV Web (<code>uvweboficial.com</code>). É um projeto independente e não oficial, sem ligação com a UniTV.</p>
 
   <h2>Dados que ficam no seu navegador</h2>
-  <p>Para funcionar, a extensão guarda localmente, usando o armazenamento do próprio Chrome (<code>chrome.storage</code>):</p>
+  <p>A extensão guarda localmente, no armazenamento do próprio Chrome (<code>chrome.storage</code>):</p>
   <ul>
     <li><strong>Preferências</strong>: tema ligado/desligado, tamanho dos pôsteres e as opções do menu da extensão. Se a sincronização do Chrome estiver ativa, o próprio Chrome pode sincronizar essas preferências entre os seus computadores.</li>
-    <li><strong>Progresso de reprodução</strong>: para cada filme/série, o episódio e o minuto em que você parou.</li>
-    <li><strong>Capas já vistas</strong>: o endereço da imagem de capa de cada título, para mostrar a capa quando o site não a tiver em outra página.</li>
+    <li><strong>Progresso de reprodução</strong>: para cada filme/série, o episódio e o minuto em que você parou, o endereço da página e a capa (para a fileira "Continue assistindo").</li>
+    <li><strong>Capas e dados de títulos já vistos</strong>, para aparecerem na hora nas próximas visitas.</li>
     <li><strong>Escolha de legenda</strong> e se você já viu a tela de boas-vindas.</li>
+    <li><strong>Marcações de abertura</strong> que você fizer no player.</li>
+    <li><strong>Minha lista</strong>: os títulos que você guardar (nome, endereço da página e capa).</li>
+    <li><strong>Ajuste de imagem</strong> (brilho e contraste) que você escolher para cada série ou filme.</li>
+    <li><strong>Sessão da conta</strong> (somente se você entrar): um código de acesso e o seu e-mail.</li>
   </ul>
-  <p>Esses dados não saem do seu navegador e não são enviados ao desenvolvedor nem a terceiros.</p>
+
+  <h2>Dados enviados ao servidor do UniSkin</h2>
+  <p>A extensão se comunica com o servidor do UniSkin (<code>uniskin-backend.desafiododeposito.com.br</code>), mantido pelo desenvolvedor:</p>
+  <ul>
+    <li><strong>Sempre</strong>: os nomes dos filmes e séries exibidos no site (por exemplo, "Sobrenatural Temp.3"), para o servidor buscar no TMDB as capas, imagens de fundo, nomes de episódios, elenco, classificação indicativa e trailer; o código no TMDB dos títulos que você assistiu por último, para avisar quando sai episódio novo e sugerir títulos parecidos ("Porque você assistiu"); e o texto digitado na busca do site, para sugerir títulos mesmo com erro de digitação. Esses pedidos não levam seu e-mail nem identificam sua conta.</li>
+    <li><strong>Só se você criar uma conta</strong>:
+      <ul>
+        <li><strong>E-mail</strong>, usado apenas para identificar a conta (não enviamos e-mails).</li>
+        <li><strong>Senha</strong>: nunca é guardada como texto; o servidor guarda apenas um hash irreversível (scrypt com salt individual).</li>
+        <li><strong>Progresso de reprodução</strong> (o mesmo descrito acima), para recuperar o "Continue assistindo" em outro computador.</li>
+        <li><strong>Marcações de abertura</strong> que você fizer no player (título, temporada, episódio e o início e o fim do trecho). Elas são combinadas com as de outros usuários, sem mostrar quem marcou, para exibir o botão "Pular abertura" para todos.</li>
+        <li><strong>Minha lista</strong> (nome do título, endereço da página e capa), para aparecer igual em todos os seus computadores.</li>
+      </ul>
+    </li>
+  </ul>
+  <p>O servidor usa o seu endereço IP somente na memória, por alguns minutos, para limitar o excesso de pedidos e tentativas de senha. O servidor web pode manter registros técnicos de acesso (data, endereço IP e página pedida) por tempo limitado, para segurança e diagnóstico.</p>
+  <p>Os dados da conta ficam em um banco de dados privado no servidor do UniSkin e não são compartilhados, vendidos nem usados para anúncios ou criação de perfil.</p>
+
+  <h2>Serviços de terceiros</h2>
+  <ul>
+    <li><strong>TMDB</strong> (The Movie Database): o servidor do UniSkin consulta o TMDB pelos nomes dos títulos. O TMDB não recebe seus dados pessoais. Dados e imagens: TMDB. Este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB.</li>
+    <li><strong>Imagens</strong>: as capas são carregadas de <code>s3.nexusnerds.com.br</code> (cópia das imagens do TMDB mantida pelo desenvolvedor) ou de <code>image.tmdb.org</code>. Como em qualquer imagem da internet, esse servidor recebe o pedido da imagem, incluindo seu endereço IP.</li>
+    <li><strong>TheIntroDB</strong> (<code>api.theintrodb.org</code>): para mostrar o botão "Pular abertura", a extensão consulta, direto do seu navegador, os horários do episódio que você está assistindo (código do título no TMDB, temporada, episódio e duração do vídeo). O TheIntroDB recebe esse pedido e o seu endereço IP, sem e-mail nem dados da conta. A resposta fica guardada só até você fechar o navegador. Veja a <a href="https://theintrodb.org/docs/privacy">política de privacidade do TheIntroDB</a>.</li>
+    <li><strong>YouTube</strong>: o botão "Trailer" da página do título toca o trailer numa janela dentro da página, com o player do YouTube no modo de privacidade aprimorada (<code>youtube-nocookie.com</code>). O player só é carregado quando você clica; a partir daí o YouTube recebe o pedido do vídeo, incluindo seu endereço IP. Veja a <a href="https://policies.google.com/privacy">política de privacidade do Google</a>.</li>
+    <li><strong>Google Fonts</strong>: o tema usa a fonte "Inter" carregada de <code>fonts.googleapis.com</code>. O Google recebe o pedido da fonte (incluindo seu endereço IP). Veja a <a href="https://policies.google.com/privacy">política de privacidade do Google</a>.</li>
+  </ul>
 
   <h2>O que a extensão não faz</h2>
   <ul>
-    <li>Não lê nem guarda senha, e-mail, telefone ou dados de pagamento.</li>
+    <li>Não lê nem guarda dados de pagamento, telefone ou documentos.</li>
+    <li>Não lê sua senha da UniTV nem de nenhum outro site; a senha que ela recebe é só a da conta do UniSkin, digitada no menu da extensão.</li>
     <li>Não registra seu histórico de navegação e não roda em outros sites.</li>
     <li>Não usa rastreadores, anúncios nem análise de uso.</li>
     <li>Não vende nem compartilha dados.</li>
   </ul>
 
-  <h2>Recursos externos</h2>
-  <p>O tema usa a fonte "Inter" carregada do Google Fonts (<code>fonts.googleapis.com</code>). Como acontece com qualquer site que usa essa fonte, o Google recebe a requisição da fonte (incluindo seu endereço IP). Veja a <a href="https://policies.google.com/privacy">política de privacidade do Google</a>.</p>
-
-  <h2>Como apagar os dados</h2>
-  <p>Remover a extensão em <code>chrome://extensions</code> apaga tudo o que ela guardou.</p>
+  <h2>Seus direitos e como apagar os dados</h2>
+  <ul>
+    <li><strong>Excluir a conta</strong>: no menu da extensão, clique em "Conta ✓" → "Excluir minha conta" e confirme com a senha. A conta, as sessões, todo o progresso, a Minha lista e as marcações de abertura guardados no servidor são apagados na hora, sem possibilidade de recuperação.</li>
+    <li><strong>Sair da conta</strong>: encerra a sessão neste navegador; os dados da conta continuam no servidor até você excluí-la.</li>
+    <li><strong>Dados do navegador</strong>: remover a extensão em <code>chrome://extensions</code> apaga tudo o que ela guardou no navegador.</li>
+    <li>Você também pode pedir acesso, correção ou exclusão dos seus dados pelo contato abaixo, conforme a Lei Geral de Proteção de Dados (LGPD).</li>
+  </ul>
 
   <h2>Mudanças nesta política</h2>
   <p>Se esta política mudar, a data no topo desta página será atualizada.</p>
