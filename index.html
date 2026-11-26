@@ -3,62 +3,442 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>UniSkin — visual novo para a UniTV Web</title>
-<meta name="description" content="Tema não oficial para a UniTV Web: visual escuro moderno, busca de canais, continuar de onde parou e próximo episódio automático.">
+<title>UniSkin — a UniTV Web do jeito que deveria ser</title>
+<meta name="description" content="Extensão para Chrome que deixa a UniTV Web mais bonita e prática: continue de onde parou, pule a abertura, Minha lista, Explorar, busca que entende erros e aviso de episódio novo.">
+<meta name="theme-color" content="#0b0c10">
+<meta property="og:title" content="UniSkin — visual novo para a UniTV Web">
+<meta property="og:description" content="Continue de onde parou, pule a abertura, descubra o que assistir e organize sua lista.">
+<meta property="og:image" content="assets/telas/inicio.jpg">
 <link rel="icon" href="assets/icone.png">
 <style>
-  :root { color-scheme: dark; }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: radial-gradient(80% 50% at 50% 0%, rgba(229,9,20,.18), transparent 70%), #0b0c10;
-    color: #e6e8eb;
-    font: 16px/1.6 "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  :root {
+    color-scheme: dark;
+    --bg: #07080b;
+    --surface: rgba(255,255,255,.035);
+    --surface-2: rgba(255,255,255,.06);
+    --line: rgba(255,255,255,.08);
+    --text: #eceef1;
+    --muted: #9aa0ab;
+    --accent: #e50914;
+    --accent-2: #ff5a3d;
+    --radius: 22px;
   }
-  main { max-width: 960px; margin: 0 auto; padding: 64px 24px 48px; }
-  .hero { text-align: center; }
-  .hero img { width: 96px; height: 96px; border-radius: 22px; box-shadow: 0 16px 44px rgba(229,9,20,.25); }
-  h1 { margin: 20px 0 8px; font-size: clamp(32px, 6vw, 48px); line-height: 1.1; letter-spacing: -0.02em; color: #fff; }
-  .lead { margin: 0 auto; max-width: 620px; font-size: 18px; color: #9aa0ab; }
-  .badge { display: inline-block; margin-top: 16px; padding: 4px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); font-size: 13px; color: #c9cdd4; }
-  .shot { display: block; width: 100%; margin: 40px 0; border-radius: 16px; border: 1px solid rgba(255,255,255,.08); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
-  .grid li { padding: 18px; border-radius: 14px; background: #15171e; border: 1px solid rgba(255,255,255,.06); }
-  .grid b { display: block; margin-bottom: 4px; color: #fff; }
-  .grid span { font-size: 14px; color: #9aa0ab; }
-  h2 { margin: 48px 0 14px; font-size: 22px; color: #fff; }
-  footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.08); font-size: 14px; color: #9aa0ab; text-align: center; }
-  a { color: #ff6b6b; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.6 "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  .wrap { width: min(1160px, 100% - 48px); margin: 0 auto; }
+
+  /* fundo: brilhos e grade sutil */
+  .bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+  .bg::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, #000 30%, transparent 75%);
+  }
+  .orb { position: absolute; border-radius: 50%; filter: blur(110px); opacity: .55; }
+  .orb.a { width: 620px; height: 620px; left: 50%; top: -320px; transform: translateX(-50%); background: radial-gradient(circle, #e50914, transparent 70%); }
+  .orb.b { width: 420px; height: 420px; right: -160px; top: 420px; background: radial-gradient(circle, #ff5a3d, transparent 70%); opacity: .22; }
+  .orb.c { width: 480px; height: 480px; left: -220px; top: 1100px; background: radial-gradient(circle, #7b1fa2, transparent 70%); opacity: .18; }
+
+  /* navegação */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    background: rgba(7,8,11,.6); border-bottom: 1px solid var(--line);
+  }
+  .nav .wrap { display: flex; align-items: center; gap: 28px; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.01em; text-decoration: none; }
+  .brand img { width: 30px; height: 30px; border-radius: 8px; }
+  .nav nav { display: flex; gap: 22px; margin-left: auto; }
+  .nav nav a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color .15s; }
+  .nav nav a:hover { color: #fff; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    height: 48px; padding: 0 22px; border-radius: 14px; border: 0;
+    font: 600 15px/1 inherit; text-decoration: none; cursor: pointer; white-space: nowrap;
+    transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; box-shadow: 0 10px 30px -8px rgba(229,9,20,.7), inset 0 1px 0 rgba(255,255,255,.25); }
+  .btn.primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -10px rgba(229,9,20,.85), inset 0 1px 0 rgba(255,255,255,.25); }
+  .btn.ghost { background: var(--surface-2); color: #fff; border: 1px solid var(--line); }
+  .btn.ghost:hover { background: rgba(255,255,255,.1); transform: translateY(-2px); }
+  .btn.small { height: 38px; padding: 0 16px; font-size: 14px; border-radius: 11px; }
+  .btn[aria-disabled="true"] { cursor: default; }
+  .btn:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+  /* destaque principal */
+  .hero { padding: 96px 0 40px; text-align: center; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px 6px 8px; border-radius: 999px;
+    background: var(--surface-2); border: 1px solid var(--line);
+    font-size: 13px; color: #c9cdd4;
+  }
+  .pill b { padding: 2px 8px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 11px; letter-spacing: .04em; }
+  h1 {
+    margin: 26px auto 18px; max-width: 900px;
+    font-size: clamp(40px, 7vw, 76px); line-height: 1.02; letter-spacing: -.035em; font-weight: 800;
+  }
+  .grad { background: linear-gradient(100deg, #fff 10%, #ffb4a8 45%, #ff5a3d 70%, #e50914); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { margin: 0 auto; max-width: 640px; font-size: clamp(17px, 2vw, 20px); color: var(--muted); }
+  .cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 34px; }
+  .note { margin-top: 14px; font-size: 13px; color: #6f7581; }
+
+  /* moldura de navegador */
+  .frame-wrap { position: relative; margin: 64px auto 0; max-width: 1100px; perspective: 1800px; }
+  .frame-wrap::before {
+    content: ""; position: absolute; inset: 8% 6% -4%; z-index: -1;
+    background: radial-gradient(closest-side, rgba(229,9,20,.55), transparent); filter: blur(60px);
+  }
+  .frame {
+    border-radius: 18px; overflow: hidden; background: #0d0f14;
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow: 0 50px 120px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(0,0,0,.5);
+    transform: rotateX(8deg) scale(.98); transform-origin: 50% 0;
+    transition: transform 1s cubic-bezier(.2,.8,.2,1);
+  }
+  .frame.flat { transform: none; }
+  .chrome-bar { display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; background: #15171e; border-bottom: 1px solid var(--line); }
+  .chrome-bar i { width: 11px; height: 11px; border-radius: 50%; background: #3a3e4a; }
+  .chrome-bar i:nth-child(1) { background: #ff5f57; } .chrome-bar i:nth-child(2) { background: #febc2e; } .chrome-bar i:nth-child(3) { background: #28c840; }
+  .chrome-bar span { margin-left: 14px; flex: 1; max-width: 420px; height: 22px; border-radius: 7px; background: #0d0f14; color: #6f7581; font-size: 12px; display: flex; align-items: center; padding: 0 10px; }
+
+  /* faixa de números */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 96px 0 0; border-radius: var(--radius); overflow: hidden; background: var(--line); border: 1px solid var(--line); }
+  .stats div { padding: 26px 20px; background: #0b0c10; text-align: center; }
+  .stats b { display: block; font-size: clamp(26px, 3.4vw, 38px); font-weight: 800; letter-spacing: -.03em; }
+  .stats span { font-size: 13px; color: var(--muted); }
+
+  /* seções */
+  section.block { padding: 120px 0 0; }
+  .eyebrow { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-2); }
+  h2 { margin: 10px 0 14px; font-size: clamp(30px, 4.4vw, 48px); line-height: 1.08; letter-spacing: -.03em; }
+  .sub { margin: 0; max-width: 620px; color: var(--muted); font-size: 18px; }
+  .center { text-align: center; } .center .sub { margin: 0 auto; }
+
+  /* bento */
+  .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-top: 48px; }
+  .card {
+    position: relative; overflow: hidden;
+    padding: 26px; border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
+    border: 1px solid var(--line);
+    transition: border-color .25s ease, transform .25s ease;
+  }
+  .card:hover { border-color: rgba(255,90,61,.35); transform: translateY(-3px); }
+  .card::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s;
+    background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 0%), rgba(255,90,61,.12), transparent 60%);
+  }
+  .card:hover::after { opacity: 1; }
+  .card.w2 { grid-column: span 2; } .card.w3 { grid-column: span 3; } .card.w4 { grid-column: span 4; }
+  .icon {
+    width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 18px;
+    background: linear-gradient(135deg, rgba(229,9,20,.25), rgba(255,90,61,.08)); border: 1px solid rgba(255,90,61,.3);
+  }
+  .icon svg { width: 22px; height: 22px; fill: #ff8a70; }
+  .card h3 { margin: 0 0 6px; font-size: 19px; letter-spacing: -.01em; }
+  .card p { margin: 0; color: var(--muted); font-size: 15px; }
+  .card .peek { margin: 22px -26px -26px; border-top: 1px solid var(--line); }
+  .card .peek img { width: 100%; height: 220px; object-fit: cover; object-position: top left; }
+  .tag { display: inline-block; margin-top: 14px; padding: 3px 10px; border-radius: 999px; font-size: 12px; color: #ffb4a8; background: rgba(229,9,20,.12); border: 1px solid rgba(229,9,20,.3); }
+
+  /* galeria */
+  .tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 40px 0 26px; }
+  .tabs button {
+    height: 40px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--surface); color: var(--muted); font: 600 14px inherit; cursor: pointer;
+    transition: background .2s, color .2s, border-color .2s;
+  }
+  .tabs button:hover { color: #fff; }
+  .tabs button[aria-selected="true"] { background: #fff; color: #0b0c10; border-color: #fff; }
+  .gallery .frame { transform: none; }
+  .gallery figure { margin: 0; }
+  .gallery figcaption { margin-top: 18px; text-align: center; color: var(--muted); }
+  .gallery img { transition: opacity .35s ease; }
+
+  /* privacidade */
+  .privacy { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px; margin-top: 48px; }
+  .list { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+  .list li { display: flex; gap: 14px; padding: 18px 20px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
+  .list li svg { width: 22px; height: 22px; flex: none; fill: #54d68f; margin-top: 2px; }
+  .list b { display: block; } .list span { color: var(--muted); font-size: 14.5px; }
+
+  /* perguntas */
+  .faq { max-width: 820px; margin: 48px auto 0; display: grid; gap: 10px; }
+  details { border-radius: 16px; background: var(--surface); border: 1px solid var(--line); transition: background .2s; }
+  details[open] { background: var(--surface-2); }
+  summary { list-style: none; cursor: pointer; padding: 20px 22px; font-weight: 600; display: flex; justify-content: space-between; gap: 16px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--muted); transition: transform .2s; }
+  details[open] summary::after { transform: rotate(45deg); }
+  details p { margin: 0; padding: 0 22px 20px; color: var(--muted); }
+
+  /* chamada final */
+  .final {
+    margin: 120px 0 0; padding: 64px 32px; text-align: center; border-radius: 28px; position: relative; overflow: hidden;
+    background: radial-gradient(120% 140% at 50% 0%, rgba(229,9,20,.35), rgba(229,9,20,.05) 55%, transparent), #0d0f14;
+    border: 1px solid rgba(255,90,61,.25);
+  }
+  .final h2 { margin-top: 0; }
+
+  footer { padding: 56px 0 48px; color: #6f7581; font-size: 13.5px; text-align: center; }
+  footer a { color: var(--muted); }
+  footer .links { display: flex; justify-content: center; gap: 22px; margin-bottom: 18px; }
+
+  /* entrada ao rolar */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .frame { transform: none; transition: none; }
+    .card, .btn { transition: none; }
+  }
+
+  @media (max-width: 900px) {
+    .nav nav { display: none; }
+    .nav .btn { margin-left: auto; }
+    .bento { grid-template-columns: 1fr 1fr; }
+    .card.w2, .card.w3, .card.w4 { grid-column: span 2; }
+    .card.half { grid-column: span 1; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .privacy { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .bento { grid-template-columns: 1fr; }
+    .card.w2, .card.w3, .card.w4, .card.half { grid-column: auto; }
+    .hero { padding-top: 64px; }
+    .chrome-bar span { display: none; }
+  }
 </style>
 </head>
 <body>
+<div class="bg" aria-hidden="true"><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="assets/icone.png" alt="">UniSkin</a>
+    <nav aria-label="Seções">
+      <a href="#recursos">Recursos</a>
+      <a href="#telas">Telas</a>
+      <a href="#privacidade">Privacidade</a>
+      <a href="#perguntas">Perguntas</a>
+    </nav>
+    <a class="btn primary small store-link" href="#instalar">Instalar</a>
+  </div>
+</header>
+
 <main>
-  <section class="hero">
-    <img src="assets/icone.png" alt="Ícone do UniSkin">
-    <h1>UniSkin</h1>
-    <p class="lead">Um visual novo e mais prático para a UniTV Web: tema escuro moderno, continuar de onde parou e próximo episódio automático.</p>
-    <span class="badge">Extensão para Google Chrome · tema não oficial</span>
+  <section class="hero wrap">
+    <span class="pill reveal"><b>NOVO</b> Versão 1.7 · Explorar, Minha lista e muito mais</span>
+    <h1 class="reveal">A UniTV Web do jeito que <span class="grad">deveria ser.</span></h1>
+    <p class="lead reveal">Continue de onde parou, pule a abertura, descubra o que assistir e organize a sua lista. Tudo num visual escuro e moderno, direto no site que você já usa.</p>
+    <div class="cta reveal" id="instalar">
+      <a class="btn primary store-link" href="#instalar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.66 5l4.33 7.5A4.5 4.5 0 0 1 12 7.5h8.66A10 10 0 0 0 12 2zm-9.4 6.3A10 10 0 0 0 10.6 21.9l4.33-7.5a4.5 4.5 0 0 1-7.47-.6L2.6 8.3zM21.4 9H12.75a4.5 4.5 0 0 1 2.95 6.3L11.37 22A10 10 0 0 0 21.4 9zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+        <span class="store-text">Em breve na Chrome Web Store</span>
+      </a>
+      <a class="btn ghost" href="#recursos">Ver os recursos</a>
+    </div>
+    <p class="note reveal">Grátis · Sem anúncios · Conta opcional</p>
+
+    <div class="frame-wrap reveal">
+      <div class="frame" id="heroFrame">
+        <div class="chrome-bar"><i></i><i></i><i></i><span>uvweboficial.com</span></div>
+        <img src="assets/telas/inicio.jpg" alt="Tela inicial da UniTV com o UniSkin: destaque em alta resolução e a fileira Continue assistindo" width="1568" height="731">
+      </div>
+    </div>
+
+    <div class="stats reveal">
+      <div><b>15+</b><span>funções novas no site</span></div>
+      <div><b>0</b><span>anúncios ou rastreadores</span></div>
+      <div><b>1 clique</b><span>para pular a abertura</span></div>
+      <div><b>100%</b><span>em português</span></div>
+    </div>
   </section>
 
-  <img class="shot" src="assets/boas-vindas.png" alt="Tela de boas-vindas do UniSkin mostrando os recursos da extensão">
+  <section class="block wrap" id="recursos">
+    <div class="center reveal">
+      <span class="eyebrow">Recursos</span>
+      <h2>Tudo o que faltava<br>para assistir em paz</h2>
+      <p class="sub">O UniSkin acrescenta funções de serviço de streaming de verdade ao site da UniTV.</p>
+    </div>
 
-  <h2>O que a extensão faz</h2>
-  <ul class="grid">
-    <li><b>Visual novo</b><span>Fontes, pôsteres, menus e player redesenhados em todo o site.</span></li>
-    <li><b>Continue de onde parou</b><span>Lembra o episódio e o minuto de cada série e filme, mesmo depois de recarregar.</span></li>
-    <li><b>Próximo episódio</b><span>Contagem no fim do episódio e troca automática, sem sair da tela cheia.</span></li>
-    <li><b>Ao vivo mais rápido</b><span>Busca de canais, categorias em botões e troca de canal pelo teclado.</span></li>
-    <li><b>Legendas do seu jeito</b><span>Começam desligadas e lembram o idioma que você escolher.</span></li>
-    <li><b>Pôsteres que faltavam</b><span>Mostra uma capa com o nome quando o site não tem imagem.</span></li>
-  </ul>
+    <div class="bento">
+      <article class="card w4 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/></svg></div>
+        <h3>Continue de onde parou</h3>
+        <p>Episódio e minuto de cada série e filme ficam guardados. Recarregou a página? Volta no mesmo ponto. Com a conta, segue até em outro computador.</p>
+        <div class="peek"><img src="assets/telas/continuar.jpg" alt="Fileira Continue assistindo com barras de progresso" loading="lazy"></div>
+      </article>
+      <article class="card w2 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg></div>
+        <h3>Pular abertura</h3>
+        <p>Botão para pular abertura e recapitulação, com horários do TheIntroDB e dos próprios usuários. Ou deixe pular sozinho.</p>
+        <span class="tag">TheIntroDB</span>
+      </article>
+      <article class="card w2 half reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M6 4l12 8-12 8V4z"/></svg></div>
+        <h3>Próximo episódio</h3>
+        <p>Cartão com contagem nos créditos e troca automática, sem sair da tela cheia.</p>
+      </article>
+      <article class="card w2 half reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M17.65 6.35A8 8 0 1 0 19.73 14h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></div>
+        <h3>Nada de “Sem recursos”</h3>
+        <p>Se o vídeo travar, a página recarrega sozinha e volta ao mesmo minuto.</p>
+      </article>
+      <article class="card w2 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.8l-.3-.3A6.5 6.5 0 1 0 14 15.5l.3.3v.8l5 5 1.5-1.5-5-5zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg></div>
+        <h3>Busca que entende erros</h3>
+        <p>“sobrenatual”, “breking bad” ou o nome em inglês: as sugestões com pôster aparecem enquanto você digita.</p>
+      </article>
+      <article class="card w3 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm2.2 12.2L6.5 17.5l3.3-7.7 7.7-3.3-3.3 7.7zM12 10.9a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2z"/></svg></div>
+        <h3>Explorar</h3>
+        <p>Navegue por gênero e época, procure pelo nome de um ator ou deixe a extensão sortear. Só aparece o que existe no catálogo.</p>
+        <div class="peek"><img src="assets/telas/explorar.jpg" alt="Tela Explorar com filtros e pôsteres" loading="lazy"></div>
+      </article>
+      <article class="card w3 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 17.3l6.2 3.7-1.6-7 5.4-4.7-7.1-.6L12 2 9.1 8.7 2 9.3l5.4 4.7-1.6 7z"/></svg></div>
+        <h3>Para você</h3>
+        <p>Fileiras “Porque você assistiu…” e Em alta na semana, baseadas no que você vê.</p>
+        <div class="peek"><img src="assets/telas/descobrir.jpg" alt="Fileiras Porque você assistiu e Em alta" loading="lazy"></div>
+      </article>
+      <article class="card w2 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></div>
+        <h3>Minha lista</h3>
+        <p>Guarde títulos direto dos pôsteres e veja tudo numa fileira na tela inicial.</p>
+      </article>
+      <article class="card w2 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div>
+        <h3>Episódio novo</h3>
+        <p>Saiu episódio da série que você acompanha? Ela volta para o topo com o selo NOVO.</p>
+      </article>
+      <article class="card w2 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12a2 2 0 0 0 2 2h5v2h8v-2h5a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 14H3V5h18v12zM10 8v6l5-3-5-3z"/></svg></div>
+        <h3>Página do título completa</h3>
+        <p>Classificação indicativa, nota, elenco com foto e trailer num player próprio.</p>
+      </article>
+    </div>
+  </section>
 
-  <h2>Privacidade</h2>
-  <p>O UniSkin não coleta nem envia nenhum dado. Preferências e progresso ficam salvos só no seu navegador. Leia a <a href="loja/politica-de-privacidade.html">política de privacidade</a>.</p>
+  <section class="block wrap" id="telas">
+    <div class="center reveal">
+      <span class="eyebrow">Telas</span>
+      <h2>Veja como fica</h2>
+    </div>
+    <div class="tabs reveal" role="tablist" aria-label="Telas do UniSkin">
+      <button role="tab" aria-selected="true" data-img="assets/telas/inicio.jpg" data-cap="Tela inicial com destaque em alta resolução e Continue assistindo.">Início</button>
+      <button role="tab" aria-selected="false" data-img="assets/telas/titulo.jpg" data-cap="Episódios assistidos marcados, classificação, nota, trailer e elenco com foto.">Título</button>
+      <button role="tab" aria-selected="false" data-img="assets/telas/descobrir.jpg" data-cap="“Porque você assistiu” e Em alta, só com o que existe no catálogo.">Descobrir</button>
+      <button role="tab" aria-selected="false" data-img="assets/telas/explorar.jpg" data-cap="Explorar por gênero, época, ator ou no sorteio.">Explorar</button>
+      <button role="tab" aria-selected="false" data-img="assets/telas/busca.jpg" data-cap="“breking bad” vira Breaking Bad: a busca entende erros de digitação.">Busca</button>
+    </div>
+    <figure class="gallery reveal">
+      <div class="frame flat">
+        <div class="chrome-bar"><i></i><i></i><i></i><span>uvweboficial.com</span></div>
+        <img id="galleryImg" src="assets/telas/inicio.jpg" alt="Tela do UniSkin" width="1568" height="731">
+      </div>
+      <figcaption id="galleryCap">Tela inicial com destaque em alta resolução e Continue assistindo.</figcaption>
+    </figure>
+  </section>
 
-  <footer>
-    UniSkin é um projeto independente e não é feito, mantido nem endossado pela UniTV.<br>
-    UniTV é marca de seus respectivos donos.
-  </footer>
+  <section class="block wrap" id="privacidade">
+    <div class="reveal">
+      <span class="eyebrow">Privacidade</span>
+      <h2>Transparente sobre<br>o que sai do seu navegador</h2>
+      <p class="sub">Sem conta, as preferências e o progresso ficam só no seu computador. Nada é vendido nem usado para anúncios.</p>
+    </div>
+    <div class="privacy">
+      <ul class="list reveal">
+        <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><div><b>Nomes dos títulos</b><span>vão ao servidor do UniSkin para buscar capas, elenco e episódios no TMDB.</span></div></li>
+        <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><div><b>Horários de abertura</b><span>são consultados no TheIntroDB direto do seu navegador.</span></div></li>
+        <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><div><b>Conta opcional</b><span>guarda e-mail, um hash da senha, o progresso e a Minha lista. Dá para excluir a qualquer momento.</span></div></li>
+      </ul>
+      <ul class="list reveal">
+        <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><div><b>Sem rastreadores</b><span>nada de análise de uso, anúncios ou perfil de comportamento.</span></div></li>
+        <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><div><b>Só na UniTV</b><span>a extensão não roda em nenhum outro site e não lê sua senha da UniTV.</span></div></li>
+        <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><div><b>Política completa</b><span>tudo detalhado na <a href="loja/politica-de-privacidade.html">política de privacidade</a>.</span></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block wrap" id="perguntas">
+    <div class="center reveal">
+      <span class="eyebrow">Perguntas</span>
+      <h2>Dúvidas comuns</h2>
+    </div>
+    <div class="faq">
+      <details class="reveal"><summary>O UniSkin é da UniTV?</summary><p>Não. É um projeto independente e não oficial. Ele só muda a aparência e acrescenta funções no site que você já acessa com a sua própria conta da UniTV; não dá acesso a nenhum conteúdo.</p></details>
+      <details class="reveal"><summary>Preciso criar conta?</summary><p>Não. Tudo funciona sem conta. A conta é só para levar o Continue assistindo e a Minha lista para outro computador.</p></details>
+      <details class="reveal"><summary>É grátis?</summary><p>Sim, sem anúncios e sem assinatura.</p></details>
+      <details class="reveal"><summary>Como desativo ou ajusto?</summary><p>Clique no ícone do UniSkin no Chrome: dá para desligar o visual, mudar o tamanho dos pôsteres, ligar o pulo automático de abertura e mais. Remover a extensão apaga tudo o que ela guardou no navegador.</p></details>
+      <details class="reveal"><summary>Funciona em outros navegadores?</summary><p>Funciona no Chrome e em navegadores baseados nele, como Edge, Brave e Opera.</p></details>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="final reveal">
+      <h2>Pronto para assistir melhor?</h2>
+      <p class="sub" style="margin:0 auto 30px">Instale em segundos. Na próxima vez que abrir a UniTV, ela já estará de cara nova.</p>
+      <a class="btn primary store-link" href="#instalar"><span class="store-text">Em breve na Chrome Web Store</span></a>
+    </div>
+  </section>
 </main>
+
+<footer class="wrap">
+  <div class="links"><a href="#recursos">Recursos</a><a href="loja/politica-de-privacidade.html">Privacidade</a><a href="https://github.com/z3ro-devolopers/UniSkin" rel="noopener">GitHub</a></div>
+  UniSkin é um projeto independente e não é feito, mantido nem endossado pela UniTV. UniTV é marca de seus respectivos donos.<br>
+  Dados e imagens de filmes e séries: <a href="https://www.themoviedb.org/" rel="noopener">TMDB</a>. Este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB.
+</footer>
+
+<script>
+  // Quando a extensão for aprovada, cole aqui o link da Chrome Web Store: os botões passam a instalar.
+  const STORE_URL = "";
+  document.querySelectorAll(".store-link").forEach((a) => {
+    if (STORE_URL) { a.href = STORE_URL; a.target = "_blank"; a.rel = "noopener"; a.querySelector(".store-text") && (a.querySelector(".store-text").textContent = "Adicionar ao Chrome — é grátis"); }
+    else if (a.querySelector(".store-text")) a.setAttribute("aria-disabled", "true");
+  });
+
+  // entrada suave ao rolar
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+  // a moldura do destaque "deita" e endireita ao rolar
+  const frame = document.getElementById("heroFrame");
+  const flat = () => frame.classList.toggle("flat", scrollY > 80);
+  addEventListener("scroll", flat, { passive: true }); flat();
+
+  // brilho que segue o mouse nos cartões
+  document.querySelectorAll(".card").forEach((c) => c.addEventListener("pointermove", (e) => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    c.style.setProperty("--my", (e.clientY - r.top) + "px");
+  }));
+
+  // galeria com abas
+  const tabs = [...document.querySelectorAll(".tabs button")], img = document.getElementById("galleryImg"), cap = document.getElementById("galleryCap");
+  const show = (b) => {
+    tabs.forEach((t) => t.setAttribute("aria-selected", String(t === b)));
+    img.style.opacity = 0;
+    setTimeout(() => { img.src = b.dataset.img; img.alt = b.dataset.cap; cap.textContent = b.dataset.cap; img.style.opacity = 1; }, 180);
+  };
+  tabs.forEach((b) => b.addEventListener("click", () => show(b)));
+  document.querySelector(".tabs").addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const i = tabs.findIndex((t) => t.getAttribute("aria-selected") === "true");
+    const n = tabs[(i + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length];
+    n.focus(); show(n);
+  });
+</script>
 </body>
 </html>
