@@ -21,40 +21,51 @@
 <body>
 <main>
   <h1>Política de privacidade — UniSkin</h1>
-  <p class="upd">Última atualização: 27 de novembro de 2026</p>
+  <p class="upd">Última atualização: 28 de novembro de 2026</p>
 
   <div class="box">
-    <strong>Resumo:</strong> sem conta, o UniSkin guarda seus dados só no navegador e envia ao servidor do UniSkin apenas os <em>nomes dos títulos</em> que aparecem na tela, para buscar capas e episódios. Se você criar uma conta (opcional), guardamos seu e-mail, um código derivado da senha, o seu progresso de reprodução e a sua "Minha lista", para sincronizar entre computadores. No "Assistir junto" (beta, opcional), o nome que você escolher, as mensagens do chat e o que a sala está assistindo passam pelo servidor só enquanto a sala existe, sem ir para o banco de dados. Nada é vendido nem usado para anúncios, e você pode excluir a conta a qualquer momento.
+    <strong>Resumo:</strong> sem conta, o UniSkin guarda seus dados só no navegador e envia ao servidor do UniSkin apenas os <em>nomes dos títulos e dos canais</em> que aparecem na tela, para buscar capas, episódios e a programação da TV. Se você criar uma conta (opcional), guardamos seu e-mail, um código derivado da senha, o seu progresso de reprodução, a sua "Minha lista" e a lista dos aparelhos conectados. O controle pelo celular e o "Assistir junto" (beta) passam pelo servidor só na memória, enquanto estão em uso, sem ir para o banco de dados. Nada é vendido nem usado para anúncios, e você pode excluir a conta a qualquer momento.
   </div>
 
   <h2>O que é o UniSkin</h2>
-  <p>UniSkin é uma extensão para o Google Chrome que muda a aparência e acrescenta atalhos no site UniTV Web (<code>uvweboficial.com</code>). É um projeto independente e não oficial, sem ligação com a UniTV.</p>
+  <p>UniSkin é uma extensão para o Google Chrome (e navegadores baseados nele) que muda a aparência e acrescenta funções no site UniTV Web (<code>uvweboficial.com</code>). Ela vem com o <strong>UniSkin Control</strong> (<code>control.uniskin.appsy.app.br</code>), um site para usar o celular como controle remoto do computador. É um projeto independente e não oficial, sem ligação com a UniTV.</p>
 
   <h2>Dados que ficam no seu navegador</h2>
-  <p>A extensão guarda localmente, no armazenamento do próprio Chrome (<code>chrome.storage</code>):</p>
+  <p>A extensão guarda localmente, no armazenamento do próprio Chrome (<code>chrome.storage</code>) e da página:</p>
   <ul>
     <li><strong>Preferências</strong>: tema ligado/desligado, tamanho dos pôsteres e as opções do menu da extensão. Se a sincronização do Chrome estiver ativa, o próprio Chrome pode sincronizar essas preferências entre os seus computadores.</li>
-    <li><strong>Progresso de reprodução</strong>: para cada filme/série, o episódio e o minuto em que você parou, o endereço da página e a capa (para a fileira "Continue assistindo").</li>
+    <li><strong>Progresso de reprodução</strong>: para cada filme/série, o episódio e o minuto em que você parou, o endereço da página e a capa (para a fileira "Continue assistindo"), e os títulos que você tirou dessa fileira.</li>
     <li><strong>Capas e dados de títulos já vistos</strong>, para aparecerem na hora nas próximas visitas.</li>
     <li><strong>Escolha de legenda</strong> e se você já viu a tela de boas-vindas.</li>
     <li><strong>Marcações de abertura</strong> que você fizer no player.</li>
-    <li><strong>Minha lista</strong>: os títulos que você guardar (nome, endereço da página e capa).</li>
-    <li><strong>Ajuste de imagem</strong> (brilho e contraste) que você escolher para cada série ou filme.</li>
+    <li><strong>Minha lista</strong> e <strong>fila "A seguir"</strong>: os títulos que você guardar (nome, endereço da página e capa).</li>
+    <li><strong>Ajuste de imagem</strong> (brilho e contraste) que você escolher para cada série, filme ou para a TV ao vivo, e o nível do <strong>reforço de áudio</strong> da aba aberta.</li>
     <li><strong>Sessão da conta</strong> (somente se você entrar): um código de acesso e o seu e-mail.</li>
+    <li><strong>Controle pelo celular</strong> (somente com conta): um código aleatório que identifica este navegador e um para cada aba, para o celular mostrar "Chrome · Windows", "Edge · Windows" etc. e falar com a aba certa.</li>
     <li><strong>Assistir junto</strong> (somente se você usar): o nome que você escolheu para a sala e, enquanto a aba estiver aberta, o código da sala em que você está.</li>
   </ul>
+  <p>O <strong>reforço de áudio</strong> e o ajuste de imagem são feitos no próprio computador: o som e a imagem do vídeo não saem do navegador.</p>
 
   <h2>Dados enviados ao servidor do UniSkin</h2>
-  <p>A extensão se comunica com o servidor do UniSkin (<code>uniskin-backend.desafiododeposito.com.br</code>), mantido pelo desenvolvedor:</p>
+  <p>A extensão e o UniSkin Control se comunicam com o servidor do UniSkin (<code>uniskin-backend.desafiododeposito.com.br</code> e <code>control.uniskin.appsy.app.br</code>), mantido pelo desenvolvedor:</p>
   <ul>
-    <li><strong>Sempre</strong>: os nomes dos filmes e séries exibidos no site (por exemplo, "Sobrenatural Temp.3"), para o servidor buscar no TMDB as capas, imagens de fundo, nomes de episódios, elenco, classificação indicativa e trailer; o código no TMDB dos títulos que você assistiu por último, para avisar quando sai episódio novo e sugerir títulos parecidos ("Porque você assistiu"); e o texto digitado na busca do site, para sugerir títulos mesmo com erro de digitação. Esses pedidos não levam seu e-mail nem identificam sua conta.</li>
+    <li><strong>Sempre</strong>: os nomes dos filmes e séries exibidos no site (por exemplo, "Sobrenatural Temp.3"), para o servidor buscar no TMDB as capas, imagens de fundo, nomes de episódios, elenco, classificação indicativa e trailer; o código no TMDB dos títulos que você assistiu por último, para avisar quando sai episódio novo e sugerir títulos parecidos ("Porque você assistiu"); o texto digitado na busca do site, para sugerir títulos mesmo com erro de digitação; e, na TV ao vivo, o <strong>nome do canal</strong> (por exemplo, "SporTV HD"), para mostrar a programação. Esses pedidos não levam seu e-mail nem identificam sua conta.</li>
     <li><strong>Só se você criar uma conta</strong>:
       <ul>
         <li><strong>E-mail</strong>, usado apenas para identificar a conta (não enviamos e-mails).</li>
         <li><strong>Senha</strong>: nunca é guardada como texto; o servidor guarda apenas um hash irreversível (scrypt com salt individual).</li>
-        <li><strong>Progresso de reprodução</strong> (o mesmo descrito acima), para recuperar o "Continue assistindo" em outro computador.</li>
+        <li><strong>Progresso de reprodução</strong> (o mesmo descrito acima), para recuperar o "Continue assistindo" em outro computador e no celular.</li>
         <li><strong>Marcações de abertura</strong> que você fizer no player (título, temporada, episódio e o início e o fim do trecho). Elas são combinadas com as de outros usuários, sem mostrar quem marcou, para exibir o botão "Pular abertura" para todos.</li>
-        <li><strong>Minha lista</strong> (nome do título, endereço da página e capa), para aparecer igual em todos os seus computadores.</li>
+        <li><strong>Minha lista</strong> (nome do título, endereço da página e capa), para aparecer igual em todos os seus aparelhos.</li>
+        <li><strong>Aparelhos conectados</strong>: para cada sessão, se é a extensão ou o controle, o navegador e o sistema informados pelo aparelho (por exemplo, "Chrome no Android"), quando entrou e quando foi usada por último. Serve para você ver e desconectar aparelhos em "Aparelhos conectados". A sessão da extensão vale 180 dias; a do controle, 30 dias desde o último uso.</li>
+      </ul>
+    </li>
+    <li><strong>Só se você usar o controle pelo celular</strong> (precisa de conta):
+      <ul>
+        <li>A aba da UniTV manda ao servidor <strong>o que está aberta</strong>: nome e capa do título ou do canal, episódio, minuto, se está tocando, volume, idioma, legenda, temporadas, fila "A seguir", as fileiras da tela inicial, os canais do ao vivo e os resultados das buscas pedidas pelo celular. O celular manda os comandos (tocar, pausar, trocar de episódio ou de canal, volume…).</li>
+        <li>Esses dados são entregues <strong>só aos aparelhos da mesma conta</strong>, ficam <strong>só na memória</strong> do servidor e não vão para o banco de dados. Somem quando a aba fecha ou o servidor reinicia.</li>
+        <li>Para avisar no computador quando um celular novo conecta, o servidor lembra, só na memória, os códigos aleatórios dos últimos 50 aparelhos da conta.</li>
+        <li>O celular só fala com abas da sua própria conta: ninguém de fora consegue ver ou comandar o seu computador.</li>
       </ul>
     </li>
     <li><strong>Só se você usar o "Assistir junto" (beta)</strong>, que não precisa de conta:
@@ -72,6 +83,8 @@
   <ul>
     <li><strong>TMDB</strong> (The Movie Database): o servidor do UniSkin consulta o TMDB pelos nomes dos títulos. O TMDB não recebe seus dados pessoais. Dados e imagens: TMDB. Este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB.</li>
     <li><strong>Imagens</strong>: as capas são carregadas de <code>s3.nexusnerds.com.br</code> (cópia das imagens do TMDB mantida pelo desenvolvedor) ou de <code>image.tmdb.org</code>. Como em qualquer imagem da internet, esse servidor recebe o pedido da imagem, incluindo seu endereço IP.</li>
+    <li><strong>Programação da TV</strong>: o servidor do UniSkin baixa, algumas vezes por dia, grades de programação públicas e gratuitas (o projeto <a href="https://github.com/limaalef/BrazilTVEPG">BrazilTVEPG</a> e o <a href="https://iptv-epg.org">IPTV-EPG.org</a>). Nenhum dado seu vai para essas fontes: quem baixa é o servidor, não o seu navegador.</li>
+    <li><strong>mi.tv</strong>: nos canais sem programação, o controle mostra um link para o guia do mi.tv. A página só abre se você tocar no link; a partir daí vale a política de privacidade do mi.tv.</li>
     <li><strong>TheIntroDB</strong> (<code>api.theintrodb.org</code>): para mostrar o botão "Pular abertura", a extensão consulta, direto do seu navegador, os horários do episódio que você está assistindo (código do título no TMDB, temporada, episódio e duração do vídeo). O TheIntroDB recebe esse pedido e o seu endereço IP, sem e-mail nem dados da conta. A resposta fica guardada só até você fechar o navegador. Veja a <a href="https://theintrodb.org/docs/privacy">política de privacidade do TheIntroDB</a>.</li>
     <li><strong>YouTube</strong>: o botão "Trailer" da página do título toca o trailer numa janela dentro da página, com o player do YouTube no modo de privacidade aprimorada (<code>youtube-nocookie.com</code>). O player só é carregado quando você clica; a partir daí o YouTube recebe o pedido do vídeo, incluindo seu endereço IP. Veja a <a href="https://policies.google.com/privacy">política de privacidade do Google</a>.</li>
     <li><strong>Google Fonts</strong>: o tema usa a fonte "Inter" carregada de <code>fonts.googleapis.com</code>. O Google recebe o pedido da fonte (incluindo seu endereço IP). Veja a <a href="https://policies.google.com/privacy">política de privacidade do Google</a>.</li>
@@ -80,8 +93,9 @@
   <h2>O que a extensão não faz</h2>
   <ul>
     <li>Não lê nem guarda dados de pagamento, telefone ou documentos.</li>
-    <li>Não lê sua senha da UniTV nem de nenhum outro site; a senha que ela recebe é só a da conta do UniSkin, digitada no menu da extensão.</li>
+    <li>Não lê sua senha da UniTV nem de nenhum outro site; a senha que ela recebe é só a da conta do UniSkin, digitada no menu da extensão ou no UniSkin Control.</li>
     <li>Não registra seu histórico de navegação e não roda em outros sites.</li>
+    <li>Não grava nem envia o som ou a imagem dos vídeos.</li>
     <li>Não usa rastreadores, anúncios nem análise de uso.</li>
     <li>Não vende nem compartilha dados.</li>
   </ul>
@@ -89,8 +103,9 @@
   <h2>Seus direitos e como apagar os dados</h2>
   <ul>
     <li><strong>Excluir a conta</strong>: no menu da extensão, clique em "Conta ✓" → "Excluir minha conta" e confirme com a senha. A conta, as sessões, todo o progresso, a Minha lista e as marcações de abertura guardados no servidor são apagados na hora, sem possibilidade de recuperação.</li>
-    <li><strong>Sair da conta</strong>: encerra a sessão neste navegador; os dados da conta continuam no servidor até você excluí-la.</li>
-    <li><strong>Dados do navegador</strong>: remover a extensão em <code>chrome://extensions</code> apaga tudo o que ela guardou no navegador.</li>
+    <li><strong>Desconectar aparelhos</strong>: no UniSkin Control, menu → "Aparelhos conectados", desconecte um aparelho ou todos os outros. A troca de senha também desconecta todos os outros aparelhos na hora.</li>
+    <li><strong>Sair da conta</strong>: encerra a sessão neste navegador ou celular; os dados da conta continuam no servidor até você excluí-la.</li>
+    <li><strong>Dados do navegador</strong>: remover a extensão em <code>chrome://extensions</code> apaga tudo o que ela guardou no navegador. No celular, sair do UniSkin Control apaga a sessão guardada nele.</li>
     <li>Você também pode pedir acesso, correção ou exclusão dos seus dados pelo contato abaixo, conforme a Lei Geral de Proteção de Dados (LGPD).</li>
   </ul>
 

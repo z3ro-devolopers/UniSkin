@@ -197,6 +197,38 @@
   footer a { color: var(--muted); }
   footer .links { display: flex; justify-content: center; gap: 22px; margin-bottom: 18px; }
 
+  /* celular do cartão "Controle pelo celular": passa pelas telas sozinho */
+  .phone-peek { padding: 34px 26px 38px; overflow: hidden; background: radial-gradient(60% 90% at 70% 100%, rgba(229,9,20,.20), transparent 70%); }
+  .phone-show { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 48px; max-width: 900px; margin: 0 auto; }
+  .ps-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .ps-list button { position: relative; display: block; width: 100%; text-align: left; padding: 12px 16px 14px; border-radius: 14px; border: 1px solid transparent; background: none; color: var(--muted); font: inherit; cursor: pointer; overflow: hidden; transition: background .3s, color .3s, border-color .3s; }
+  .ps-list button:hover { color: var(--text); background: var(--surface); }
+  .ps-list b { display: block; font-size: 16px; color: inherit; }
+  .ps-list span { display: block; font-size: 13.5px; margin-top: 2px; }
+  .ps-list button[aria-current="true"] { color: var(--text); background: var(--surface-2); border-color: var(--line); }
+  .ps-list button[aria-current="true"] b { color: #fff; }
+  .ps-bar { position: absolute; left: 16px; right: 16px; bottom: 6px; height: 2px; border-radius: 2px; background: rgba(255,255,255,.08); overflow: hidden; opacity: 0; }
+  .ps-bar::after { content: ""; position: absolute; inset: 0; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+  .ps-list button[aria-current="true"] .ps-bar { opacity: 1; }
+  .phone-show.playing .ps-list button[aria-current="true"] .ps-bar::after { animation: psFill var(--ps-dur, 3600ms) linear forwards; }
+  @keyframes psFill { to { transform: scaleX(1); } }
+  .ps-phone { width: 236px; aspect-ratio: 387 / 837; padding: 9px; border-radius: 40px; background: #16171d; box-shadow: 0 0 0 2px #2c2e37, 0 30px 70px rgba(0,0,0,.6), 0 0 90px rgba(229,9,20,.18); }
+  .ps-screen { position: relative; height: 100%; border-radius: 31px; overflow: hidden; background: #0b0c10; }
+  .card .peek .ps-screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; opacity: 0; transform: translateX(14%) scale(.98); transition: opacity .55s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+  .card .peek .ps-screen img.on { opacity: 1; transform: none; }
+  .card .peek .ps-screen img.out { opacity: 0; transform: translateX(-14%) scale(.98); }
+  @media (max-width: 900px) {
+    .phone-show { grid-template-columns: 1fr; justify-items: center; gap: 22px; }
+    .ps-list { grid-auto-flow: column; grid-auto-columns: auto; overflow-x: auto; max-width: 100%; padding: 0 0 4px; scrollbar-width: none; }
+    .ps-list span { display: none; }
+    .ps-list button { padding: 9px 14px 12px; white-space: nowrap; }
+    .ps-bar { left: 12px; right: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card .peek .ps-screen img, .card .peek .ps-screen img.out { transform: none; transition: opacity .2s; }
+    .phone-show.playing .ps-list button[aria-current="true"] .ps-bar::after { animation: none; transform: scaleX(1); }
+  }
+
   /* entrada ao rolar */
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1); }
   .reveal.in { opacity: 1; transform: none; }
@@ -243,9 +275,9 @@
 
 <main>
   <section class="hero wrap">
-    <span class="pill reveal"><b>NOVO</b> Versão 1.8 · Assistir junto com os amigos (beta)</span>
+    <span class="pill reveal"><b>NOVO</b> Versão 1.10 · Controle pelo celular e TV ao vivo com programação</span>
     <h1 class="reveal">A UniTV Web do jeito que <span class="grad">deveria ser.</span></h1>
-    <p class="lead reveal">Assista junto com os amigos, continue de onde parou, pule a abertura, descubra o que assistir e organize a sua lista. Tudo num visual escuro e moderno, direto no site que você já usa.</p>
+    <p class="lead reveal">Comande pelo celular, veja a programação da TV ao vivo, assista junto com os amigos, continue de onde parou e pule a abertura. Tudo num visual escuro e moderno, direto no site que você já usa.</p>
     <div class="cta reveal" id="instalar">
       <a class="btn primary store-link" href="https://chromewebstore.google.com/detail/lmadiichfednomildbghpkmiejabbcln" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.66 5l4.33 7.5A4.5 4.5 0 0 1 12 7.5h8.66A10 10 0 0 0 12 2zm-9.4 6.3A10 10 0 0 0 10.6 21.9l4.33-7.5a4.5 4.5 0 0 1-7.47-.6L2.6 8.3zM21.4 9H12.75a4.5 4.5 0 0 1 2.95 6.3L11.37 22A10 10 0 0 0 21.4 9zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
@@ -263,7 +295,7 @@
     </div>
 
     <div class="stats reveal">
-      <div><b>15+</b><span>funções novas no site</span></div>
+      <div><b>25+</b><span>funções novas no site</span></div>
       <div><b>0</b><span>anúncios ou rastreadores</span></div>
       <div><b>1 clique</b><span>para pular a abertura</span></div>
       <div><b>100%</b><span>em português</span></div>
@@ -278,6 +310,51 @@
     </div>
 
     <div class="bento">
+      <article class="card w6 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M17 1H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm0 18H7V5h10v14zm-5 3.2a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg></div>
+        <h3>Controle pelo celular</h3>
+        <p>Abra o UniSkin Control no celular, entre com a mesma conta e comande a UniTV do computador, sem levantar do sofá.</p>
+        <ul class="points">
+          <li>Play, pausa, minutagem, episódios, temporadas e pular abertura</li>
+          <li>Volume, tela cheia, idioma, legenda, imagem e reforço de áudio</li>
+          <li>Continue assistindo com capas, busca na UniTV e fila "A seguir"</li>
+          <li>Escolha o navegador (Chrome, Edge…) e veja os aparelhos conectados</li>
+        </ul>
+        <span class="tag">NOVO</span>
+        <div class="peek phone-peek">
+          <div class="phone-show" id="phoneShow">
+            <ol class="ps-list" aria-label="Telas do UniSkin Control">
+            <li><button type="button" data-i="0" aria-current="true"><b>Início</b><span>Continue assistindo com capas e busca na UniTV do computador</span><i class="ps-bar"></i></button></li>
+            <li><button type="button" data-i="1"><b>Controle</b><span>Play, minutagem, volume, reforço de áudio, idioma e legenda</span><i class="ps-bar"></i></button></li>
+            <li><button type="button" data-i="2"><b>Episódios</b><span>Temporadas, dublado ou original, assistidos marcados e fila</span><i class="ps-bar"></i></button></li>
+            <li><button type="button" data-i="3"><b>TV ao vivo</b><span>Canal tocando, agora e a seguir, CH e teclado numérico</span><i class="ps-bar"></i></button></li>
+            <li><button type="button" data-i="4"><b>Programação</b><span>A grade do dia de cada canal, com o que está passando agora</span><i class="ps-bar"></i></button></li>
+            </ol>
+            <div class="ps-phone" aria-live="polite">
+              <div class="ps-screen">
+              <img src="assets/telas/cel-inicio.jpg" alt="UniSkin Control no celular: início" width="387" height="837" class="on">
+              <img src="assets/telas/cel-controle.jpg" alt="UniSkin Control no celular: controle" width="387" height="837" loading="lazy">
+              <img src="assets/telas/cel-episodios.jpg" alt="UniSkin Control no celular: episódios" width="387" height="837" loading="lazy">
+              <img src="assets/telas/cel-live.jpg" alt="UniSkin Control no celular: tv ao vivo" width="387" height="837" loading="lazy">
+              <img src="assets/telas/cel-grade.jpg" alt="UniSkin Control no celular: programação" width="387" height="837" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="card w4 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M21 6h-7.6l3.3-3.3-.7-.7L12 5.6 8 2l-.7.7L10.6 6H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm0 14H3V8h18v12zM9 10v8l7-4-7-4z"/></svg></div>
+        <h3>TV ao vivo com programação</h3>
+        <p>O que está passando agora, o que vem a seguir e a grade do dia de cada canal, no computador e no celular. No lugar do "No Data" da UniTV.</p>
+        <span class="tag">NOVO</span>
+        <div class="peek"><img src="assets/telas/aovivo.jpg" alt="TV ao vivo com a grade de programação do canal aberta ao lado do player" loading="lazy"></div>
+      </article>
+      <article class="card w2 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M12.9 15.1l-2.5-2.5.03-.03A17.5 17.5 0 0 0 14.1 6H17V4h-7V2H8v2H1v2h11.2A15.8 15.8 0 0 1 9 11.4 15.6 15.6 0 0 1 6.7 8H4.7a17.6 17.6 0 0 0 3 4.6l-5.1 5L4 19l5-5 3.1 3.1.8-2zM18.5 10h-2L12 22h2l1.1-3h4.8l1.1 3h2l-4.5-12zm-2.6 7l1.6-4.3 1.6 4.3h-3.2z"/></svg></div>
+        <h3>Dublado ou original</h3>
+        <p>Temporadas sem repetição e seletor de áudio. A troca volta no mesmo minuto, em tela cheia.</p>
+        <span class="tag">NOVO</span>
+      </article>
       <article class="card w6 reveal">
         <div class="icon"><svg viewBox="0 0 24 24"><path d="M16 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05C16.19 13.89 17 15.02 17 16.5V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
         <h3>Assistir junto</h3>
@@ -330,17 +407,23 @@
         <p>Fileiras “Porque você assistiu…” e Em alta na semana, baseadas no que você vê.</p>
         <div class="peek"><img src="assets/telas/descobrir.jpg" alt="Fileiras Porque você assistiu e Em alta" loading="lazy"></div>
       </article>
-      <article class="card w2 reveal">
-        <div class="icon"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></div>
-        <h3>Minha lista</h3>
-        <p>Guarde títulos direto dos pôsteres e veja tudo numa fileira na tela inicial.</p>
+      <article class="card w3 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg></div>
+        <h3>Reforço de áudio</h3>
+        <p>Som baixo? Aumente até 300%, com um limitador que segura os picos. Tudo processado no seu computador.</p>
+        <span class="tag">NOVO</span>
       </article>
-      <article class="card w2 reveal">
+      <article class="card w3 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></div>
+        <h3>Minha lista e fila</h3>
+        <p>Guarde títulos direto dos pôsteres e monte a fila "A seguir" do que assistir depois.</p>
+      </article>
+      <article class="card w3 reveal">
         <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div>
         <h3>Episódio novo</h3>
         <p>Saiu episódio da série que você acompanha? Ela volta para o topo com o selo NOVO.</p>
       </article>
-      <article class="card w2 reveal">
+      <article class="card w3 reveal">
         <div class="icon"><svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12a2 2 0 0 0 2 2h5v2h8v-2h5a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 14H3V5h18v12zM10 8v6l5-3-5-3z"/></svg></div>
         <h3>Página do título completa</h3>
         <p>Classificação indicativa, nota, elenco com foto e trailer num player próprio.</p>
@@ -355,6 +438,9 @@
     </div>
     <div class="tabs reveal" role="tablist" aria-label="Telas do UniSkin">
       <button role="tab" aria-selected="true" data-img="assets/telas/inicio.jpg" data-cap="Tela inicial com destaque em alta resolução e Continue assistindo.">Início</button>
+      <button role="tab" aria-selected="false" data-img="assets/telas/controle.jpg" data-cap="UniSkin Control: o celular vira controle remoto da UniTV no computador.">Celular</button>
+      <button role="tab" aria-selected="false" data-img="assets/telas/aovivo.jpg" data-cap="TV ao vivo com a programação do canal: agora, a seguir e a grade do dia.">Ao vivo</button>
+      <button role="tab" aria-selected="false" data-img="assets/telas/idioma.jpg" data-cap="Temporadas organizadas e seletor de áudio: dublado ou original, no mesmo minuto.">Idioma</button>
       <button role="tab" aria-selected="false" data-img="assets/telas/titulo.jpg" data-cap="Episódios assistidos marcados, classificação, nota, trailer e elenco com foto.">Título</button>
       <button role="tab" aria-selected="false" data-img="assets/telas/descobrir.jpg" data-cap="“Porque você assistiu” e Em alta, só com o que existe no catálogo.">Descobrir</button>
       <button role="tab" aria-selected="false" data-img="assets/telas/explorar.jpg" data-cap="Explorar por gênero, época, ator ou no sorteio.">Explorar</button>
@@ -382,6 +468,8 @@
         <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><div><b>Nomes dos títulos</b><span>vão ao servidor do UniSkin para buscar capas, elenco e episódios no TMDB.</span></div></li>
         <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><div><b>Horários de abertura</b><span>são consultados no TheIntroDB direto do seu navegador.</span></div></li>
         <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><div><b>Conta opcional</b><span>guarda e-mail, um hash da senha, o progresso e a Minha lista. Dá para excluir a qualquer momento.</span></div></li>
+        <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><div><b>Controle pelo celular</b><span>o que está tocando e os comandos passam pelo servidor só na memória e só entre os aparelhos da sua conta.</span></div></li>
+        <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><div><b>Programação da TV</b><span>só o nome do canal vai ao servidor; as grades vêm de fontes públicas, baixadas pelo servidor.</span></div></li>
         <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><div><b>Assistir junto</b><span>o nome da sala, o chat e o que a sala assiste ficam só na memória do servidor enquanto a sala existe. Nenhum vídeo passa por ele.</span></div></li>
       </ul>
       <ul class="list reveal">
@@ -399,8 +487,10 @@
     </div>
     <div class="faq">
       <details class="reveal"><summary>O UniSkin é da UniTV?</summary><p>Não. É um projeto independente e não oficial. Ele só muda a aparência e acrescenta funções no site que você já acessa com a sua própria conta da UniTV; não dá acesso a nenhum conteúdo.</p></details>
-      <details class="reveal"><summary>Preciso criar conta?</summary><p>Não. Tudo funciona sem conta. A conta é só para levar o Continue assistindo e a Minha lista para outro computador.</p></details>
+      <details class="reveal"><summary>Preciso criar conta?</summary><p>Não. Quase tudo funciona sem conta. A conta serve para levar o Continue assistindo e a Minha lista para outro computador e para usar o celular como controle.</p></details>
       <details class="reveal"><summary>Como funciona o Assistir junto?</summary><p>Abra um filme ou série, clique em “Assistir junto”, digite seu nome e crie a sala. Mande o link (ou o código de 8 letras) para os amigos: cada um precisa da UniSkin instalada e da própria conta da UniTV. Quem cria a sala é o anfitrião e escolhe o que os convidados podem fazer. É uma função em teste (beta).</p></details>
+      <details class="reveal"><summary>Como uso o celular como controle?</summary><p>Crie uma conta pelo ícone do UniSkin no Chrome (é grátis). No celular, abra <b>control.uniskin.appsy.app.br</b> e entre com a mesma conta: o computador com a UniTV aberta aparece sozinho. Dá para instalar o controle como app na tela inicial do celular.</p></details>
+      <details class="reveal"><summary>De onde vem a programação da TV?</summary><p>De grades de programação públicas e gratuitas (BrazilTVEPG e IPTV-EPG.org), que o servidor do UniSkin baixa algumas vezes por dia e liga aos canais da UniTV pelo nome. Afiliadas regionais usam a grade nacional da rede. Canais sem grade continuam mostrando o "No Data" do site.</p></details>
       <details class="reveal"><summary>É grátis?</summary><p>Sim, sem anúncios e sem assinatura.</p></details>
       <details class="reveal"><summary>Como desativo ou ajusto?</summary><p>Clique no ícone do UniSkin no Chrome: dá para desligar o visual, mudar o tamanho dos pôsteres, ligar o pulo automático de abertura e mais. Remover a extensão apaga tudo o que ela guardou no navegador.</p></details>
       <details class="reveal"><summary>Funciona em outros navegadores?</summary><p>Funciona no Chrome e em navegadores baseados nele, como Edge, Brave e Opera.</p></details>
@@ -445,6 +535,42 @@
     c.style.setProperty("--mx", (e.clientX - r.left) + "px");
     c.style.setProperty("--my", (e.clientY - r.top) + "px");
   }));
+
+  // celular do cartão "Controle pelo celular": troca de tela sozinho (para ao passar o mouse, ao focar e fora da tela)
+  (() => {
+    const box = document.getElementById("phoneShow");
+    if (!box) return;
+    const btns = [...box.querySelectorAll(".ps-list button")], shots = [...box.querySelectorAll(".ps-screen img")];
+    const DUR = 3600;
+    box.style.setProperty("--ps-dur", DUR + "ms");
+    let i = 0, timer = 0, visible = false, held = false;
+    const go = (n) => {
+      if (n === i) return;
+      shots[i].classList.remove("on"); shots[i].classList.add("out");
+      const old = shots[i];
+      setTimeout(() => old.classList.remove("out"), 700);
+      i = (n + shots.length) % shots.length;
+      shots[i].classList.add("on");
+      btns.forEach((b, k) => { if (k === i) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); });
+      const list = box.querySelector(".ps-list"); // no celular as telas viram abas: a ativa fica à vista
+      if (list.scrollWidth > list.clientWidth) list.scrollTo({ left: btns[i].parentElement.offsetLeft - 16, behavior: "smooth" });
+      restart();
+    };
+    const restart = () => {
+      clearTimeout(timer);
+      box.classList.remove("playing");
+      if (!visible || held) return;
+      void box.offsetWidth; // recomeça a barrinha da tela atual
+      box.classList.add("playing");
+      timer = setTimeout(() => go(i + 1), DUR);
+    };
+    btns.forEach((b, k) => b.addEventListener("click", () => go(k)));
+    box.addEventListener("pointerenter", () => { held = true; restart(); });
+    box.addEventListener("pointerleave", () => { held = false; restart(); });
+    box.addEventListener("focusin", () => { held = true; restart(); });
+    box.addEventListener("focusout", () => { held = false; restart(); });
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; restart(); }, { threshold: 0.35 }).observe(box);
+  })();
 
   // galeria com abas
   const tabs = [...document.querySelectorAll(".tabs button")], img = document.getElementById("galleryImg"), cap = document.getElementById("galleryCap");
